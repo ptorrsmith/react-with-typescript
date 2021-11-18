@@ -1,31 +1,51 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import List from './components/List';
+
+// define types for people (an array of objects with attribute types)
+interface iState {
+  people: {
+    name: string
+    age: number
+    url: string
+    note?: string
+  }[]
+}
 
 function App() {
 
-  const [number, setNumber] = useState<number>(5); // don't need to define as inferred
+  // const [number, setNumber] = useState<number>(5); // don't need to define as inferred
 
-  const changeNumber = () => {
-    setNumber(10);
-  }
+  // const changeNumber = () => {
+  //   setNumber(10);
+  // }
+
+  const [people, setPeople] = useState<iState["people"]>([
+    {
+      name: "Peter",
+      age: 30,
+      url: "https://peter.torr.smith/",
+      note: "I am a programmer"
+    },
+    {
+      name: "Mary",
+      age: 33,
+      url: "https://peter.torr.smith/",
+      note: "I am not a programmer"
+    }
+  ]) // defines the type (iState["people"]) for our people local state
+
+  // people.map(person => {
+  //   person.note
+  // })
+
+
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>People invited to the gig</h1>
+      <List people={people}/>
     </div>
   );
 }
