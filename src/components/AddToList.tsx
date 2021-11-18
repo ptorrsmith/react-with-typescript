@@ -1,6 +1,13 @@
 import React, { useState } from "react";
+import { IState as Props} from "../App"
 
-const AddToList = () => {
+interface IProps {
+  people: Props["people"] // exported interface from App.tsx
+  setPeople: React.Dispatch<React.SetStateAction<Props["people"]>>
+}
+
+
+const AddToList: React.FC<IProps> = ({ people, setPeople }) => {
 
   const [input, setInput] = useState({
     name: "",
@@ -9,11 +16,38 @@ const AddToList = () => {
     url: ""
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
     setInput({
       ...input, // sread the current state, then overwrite the value of the input that was changed
       [e.target.name]: e.target.value
     });
+  }
+
+  const handleClick = (): void => {
+    if(
+      !input.name || !input.age || !input.url
+    ) {
+      return
+    }
+
+    setPeople([
+      ...people,
+      {
+        name: input.name,
+        age: parseInt(input.age),
+        url: input.url,
+        note: input.note
+      }
+
+    ])
+
+    setInput({
+      name: "",
+      age: "",
+      note: "",
+      url: ""
+    })
+
   }
 
   return (
@@ -28,7 +62,7 @@ const AddToList = () => {
         name="name"
       />
       <input
-        type="text"
+        type="number"
         placeholder="Age"
         className="AddToList-input"
         value={input.age}
@@ -50,6 +84,12 @@ const AddToList = () => {
         onChange={handleChange}
         name="note"
       />
+      <button
+        className="AddToList-btn"
+        onClick={handleClick}
+        >
+        Add them now!
+      </button>
     </div>
   )
 }
